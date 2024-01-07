@@ -1,3 +1,8 @@
+/*  I wrote this myself, but it is a copy of the code from this tutorial:
+/   https://www.youtube.com/watch?v=DvlyzDZDEq4
+/   Thanks for teaching me how to code          
+/   This is purely for my own self instruction    */
+
 const express = require('express')
 const app     = express()
 const server  = require('http').Server(app)
@@ -19,6 +24,10 @@ io.on('connection', socket => {
     socket.on('join-room', (roomId, userId) => {
         socket.join(roomId)
         socket.broadcast.to(roomId).emit('user-connected', userId) //joins a room and tells everyone
+
+        socket.on('disconnect', () => {
+            socket.broadcast.to(roomId).emit('user-disconnected', userId)
+        } )
     })
 })
 
